@@ -21,24 +21,28 @@ export default function SimplePredictor() {
   };
 
   const predict = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.post('http://127.0.0.1:8000/predict', {
-        internal_storage: parseFloat(selections.storage),
-        storage_ram: parseFloat(selections.ram),
-        battery: parseInt(selections.battery),
-        primary_camera: selections.camera,
-        display: selections.display,
-        network: selections.network
-      });
-      setPrice(res.data.predicted_price);
-    } catch (err) {
-      alert('Error al predecir. Revisa consola.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+
+  const apiUrl = 'https://samsung-specs-predictor-backend.onrender.com';
+ 
+
+  try {
+    const res = await axios.post(`${apiUrl}/predict`, { 
+      internal_storage: parseFloat(selections.storage),
+      storage_ram: parseFloat(selections.ram),
+      battery: parseInt(selections.battery),
+      primary_camera: selections.camera,
+      display: selections.display,
+      network: selections.network
+    });
+    setPrice(res.data.predicted_price);
+  } catch (err) {
+    alert('Error al predecir. Revisa consola.');
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="max-w-3xl m-auto p-8 bg-white rounded-xl shadow-lg">
